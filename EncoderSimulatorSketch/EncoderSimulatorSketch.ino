@@ -19,7 +19,7 @@
 #define ENCODER_COUNTERCLOCKWISE_BUTTON_PIN 5
 
 #define ENCODER_SPEED_PIN A0
-#define ENCODER_SPEED_MAX 505
+#define ENCODER_SPEED_MAX 1023
 
 // ===================================== Globals ======================================
 uint8_t channelAState = 0;
