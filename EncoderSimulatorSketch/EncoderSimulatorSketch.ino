@@ -8,7 +8,10 @@
 
 // ===================================== Includes =====================================
 #include <stdint.h>
-#include <Arduino.h>
+
+#include "Arduino.h"
+
+#include "EncoderSim.h"
 
 
 // ===================================== Constants ====================================
@@ -89,13 +92,10 @@ void encoder_rotateCounterClockwise(uint32_t encoderSpeed) {
 }
 
 void setup() {
-    // put your setup code here, to run once:
-    // Pin Setup
-    pinMode(ENCODER_CHA_PIN, OUTPUT);
-    pinMode(ENCODER_CHB_PIN, OUTPUT);
-    digitalWrite(ENCODER_CHA_PIN, LOW);
-    digitalWrite(ENCODER_CHB_PIN, LOW);
+    // Encoder Tester Setup
+    initEncoderSim();
 
+    // Pin Setup
     pinMode(ENCODER_CLOCKWISE_BUTTON_PIN, INPUT_PULLUP);
     pinMode(ENCODER_COUNTERCLOCKWISE_BUTTON_PIN, INPUT_PULLUP);
 
@@ -107,22 +107,26 @@ void setup() {
 }
 
 void loop() {
-    // put your main code here, to run repeatedly:
     // Read the encoder speed
     uint32_t encoderSpeed = analogRead(ENCODER_SPEED_PIN);
 
     // move the encoder
     if (digitalRead(ENCODER_CLOCKWISE_BUTTON_PIN) == LOW) {
-        rotateEncoderClockwise(encoderSpeed);
+        requestEncoderRotateCW();
     } else if (digitalRead(ENCODER_COUNTERCLOCKWISE_BUTTON_PIN) == LOW) {
-        encoder_rotateCounterClockwise(encoderSpeed);
+        requestEncoderRotateCCW();
     } else {
         // Do nothing
     }
 
+    // Update the encoder
+    updateEncoderSim(encoderSpeed);
+
     // Print the encoder speed
     char string[100];
 
-    snprintf(string, 100, "Encoder Value: %1d%1d, Encoder Speed %4d", channelAState, channelBState, encoderSpeed);
+    snprintf(string, 100, "Encoder Value: %1d%1d, Encoder Speed %4d", 
+            getLeadPinState(), getLagPinState(), getEncoderValue());
+
     Serial.println(string);
 }
