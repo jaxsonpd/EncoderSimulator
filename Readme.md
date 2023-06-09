@@ -11,3 +11,5 @@ In order to use this simulator simply hook connect the ground of the Arduino wit
 - Remove reliance on delays for adjusting the speed
 - Change wording to leading and trailing channels instead of A and B
 - Create a module so it can be imported into other project.
+- Add Schematic
+- Add Serial interface
